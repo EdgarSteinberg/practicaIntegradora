@@ -1,0 +1,61 @@
+* {
+    background-color: black;
+    color: white;
+    
+}
+
+h1{
+    text-align: center;
+}
+
+ul {
+  list-style: none;
+ }
+
+.container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.products{
+    display: flex;
+    flex-direction: column;
+    border:1px solid white;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 10px;
+    width: 20%;
+    text-align: center;
+}
+
+.delete{
+    background-color: red;
+    padding: 10px;
+}
+
+.form{
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+input {
+    width: 20%;
+    padding: 4px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    color: black;
+}
+
+.btn {
+    color: white;
+    background-color: green;
+    border: 1px solid black;
+    border-radius: 5px;
+    font-size: 15px;
+}

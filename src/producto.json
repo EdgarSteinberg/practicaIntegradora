@@ -1,0 +1,38 @@
+[
+	{
+		"id": 1,
+		"title": "Coca",
+		"description": "Bebida",
+		"price": "2000",
+		"thumbnail": "Sin thumbnail",
+		"code": "1c",
+		"stock": "12"
+	},
+	{
+		"id": 2,
+		"title": "sega4",
+		"description": "segagenesis",
+		"price": "100",
+		"thumbnail": "FB_IMG_1572883487761.jpg",
+		"code": "123cs",
+		"stock": "15"
+	},
+	{
+		"id": 3,
+		"title": "sega3",
+		"description": "segagenesis",
+		"price": "100",
+		"thumbnail": "FB_IMG_1572562562253.jpg",
+		"code": "123cs",
+		"stock": "15"
+	},
+	{
+		"id": 4,
+		"title": "Agua ",
+		"description": "fria",
+		"price": "1000",
+		"thumbnail": "Sin thumbnail",
+		"code": "1c",
+		"stock": "12"
+	}
+]
