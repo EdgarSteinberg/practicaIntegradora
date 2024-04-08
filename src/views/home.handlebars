@@ -1,13 +1,18 @@
 <h1>Bienvenido {{name}}</h1>
 
+<div class="container">
+ 
 {{#each products}}
 
-    <div>
-        <h2>title: {{this.title}}</h2>
-        <p>description: {{this.description}}</p>
+    <div class="products">
+        <h2 class="linea">Title: {{this.title}}</h2>
+        <p>Description: {{this.description}}</p>
         <p>Precio: {{this.price}}</p>
-        <p>code: {{this.code}}</p>
-       <img src="/img/{{this.thumbnail}}" alt="img">
+        <p>Code: {{this.code}}</p>
+        <p>Category: {{this.category}}</p>
+       <img src="/img/{{this.thumbnail}}" alt="{{this.description}}">
     </div>
     
 {{/each}}
+
+</div>

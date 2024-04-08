@@ -1,38 +1,46 @@
 [
 	{
 		"id": 1,
-		"title": "Coca",
-		"description": "Bebida",
+		"title": "Fanta",
+		"description": "Naranja",
 		"price": "2000",
-		"thumbnail": "Sin thumbnail",
+		"status": true,
+		"thumbnail": [],
 		"code": "1c",
-		"stock": "12"
+		"stock": "12",
+		"category": "Bebidas"
 	},
 	{
 		"id": 2,
-		"title": "sega4",
-		"description": "segagenesis",
-		"price": "100",
-		"thumbnail": "FB_IMG_1572883487761.jpg",
-		"code": "123cs",
-		"stock": "15"
+		"title": "play 14",
+		"description": "play 4",
+		"price": 7000000,
+		"status": true,
+		"thumbnail": "img473",
+		"code": 123456,
+		"stock": 7100,
+		"category": "consola"
 	},
 	{
 		"id": 3,
-		"title": "sega3",
-		"description": "segagenesis",
-		"price": "100",
-		"thumbnail": "FB_IMG_1572562562253.jpg",
-		"code": "123cs",
-		"stock": "15"
+		"title": "play 1",
+		"description": "play 4",
+		"price": 7000000,
+		"status": true,
+		"thumbnail": "img473",
+		"code": 123456,
+		"stock": 7100,
+		"category": "consola"
 	},
 	{
 		"id": 4,
-		"title": "Agua ",
-		"description": "fria",
-		"price": "1000",
-		"thumbnail": "Sin thumbnail",
+		"title": "Sega",
+		"description": "genesis",
+		"price": "10000",
+		"status": true,
 		"code": "1c",
-		"stock": "12"
+		"stock": "12",
+		"category": "1c",
+		"thumbnail": []
 	}
 ]

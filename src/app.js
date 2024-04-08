@@ -2,16 +2,20 @@ import express from "express";
 import handlebars from "express-handlebars";
 import rutasProduct from "./router/rutasProduct.js";
 import rutasCart from "./router/rutasCart.js";
+import rutasMessage from "./router/rutasMessage.js"
 import viewsRouter from './router/viewsRouter.js'
 import __dirname from "./utils/constantsUtil.js"
 import { Server } from 'socket.io';
 import websocket from './websocket.js'
-
-// import ProductManager from "./managers/productManager.js"
-// const Manager = new ProductManager("./src/producto.json");
+import mongoose from "mongoose";
 
 
 const app = express();
+
+//MongoDB conect
+const uri = "mongodb+srv://steinberg2024:cai2024@cluster0.cl7spkj.mongodb.net/ecommerce?retryWrites=true&w=majority&appName=Cluster0";
+mongoose.connect(uri);
+
 
 //Middlewares
 app.use(express.json());
@@ -28,13 +32,7 @@ app.set("views", `${__dirname}/../views`);
 app.use("/api/products", rutasProduct);
 app.use("/api/cart", rutasCart);
 app.use("/products", viewsRouter);
-
-
-//Rutas carpeta public
-// app.use("/img", express.static(__dirname + "/../../../public/img"));
-// app.use("/css", express.static(__dirname + "/../../../public/css"));
-// app.use("/js", express.static(__dirname + "/../../../public/js"));
-
+app.use("/chat", rutasMessage)
 
 
 //Websocket
