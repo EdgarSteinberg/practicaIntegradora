@@ -40,12 +40,12 @@ export default (io) => {
         });
 
 
-        //////////////////////////////////////////////Chat//////////////////////////////////////////////////////
+        //socket chat
         socket.on("nuevoMensaje", async data => {
             console.log(data)
             await Message.createMessages(data);
 
-           // io.emit("nuevoMensaje", data);
+            io.emit("nuevoMensaje", data);
         });
 
 

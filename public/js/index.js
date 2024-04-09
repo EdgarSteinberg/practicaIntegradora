@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <p>Precio: $ ${nuevoProducto.price}</p>
             <p>Código: ${nuevoProducto.code}</p>
             <p>Category: ${nuevoProducto.category}</p>
-            <img src="${nuevoProducto.thumbnail}" alt="Imagen del Producto">
+            <img src="${nuevoProducto.thumbnail}" alt="${nuevoProducto.description}">
             <br>
             <button class="delete" data-productid="${nuevoProducto.id}" >Eliminar</button>
         `;
@@ -64,65 +64,4 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
-
-document.addEventListener('DOMContentLoaded', function () {
-    // Obtener la ruta de la URL actual
-    const path = window.location.pathname;
-    // Verificar si la ruta contiene '/products/chat'
-    if (path.includes('/products/chat')) {
-   
-        document.getElementById("mensajeForm").addEventListener("submit", (event) => {
-            event.preventDefault();
-        
-            const user = document.getElementById('user').value;
-            const message = document.getElementById('message').value;
-        
-            const nuevoMensaje = {
-                user,
-                message
-            };
-        
-            // Emitir el mensaje al servidor
-            socket.emit('nuevoMensaje', nuevoMensaje);
-        
-            // Mostrar el mensaje en la interfaz de usuario
-            mostrarMensaje(nuevoMensaje);
-            document.getElementById("mensajeForm").reset()
-        });
-        
-        // Función para mostrar un mensaje en la interfaz de usuario
-        // function mostrarMensaje(mensaje) {
-        //     const messageContainer = document.createElement('div');
-        //     const userHeader = document.createElement('h2');
-        //     const messageParagraph = document.createElement('p');
-        
-        //     messageContainer.classList.add('message-container');
-        //     userHeader.textContent = mensaje.user;
-        //     messageParagraph.textContent = mensaje.message;
-        
-        //     messageContainer.appendChild(userHeader);
-        //     messageContainer.appendChild(messageParagraph);
-        
-        //     const messagesLogs = document.getElementById('messagesLogs');
-        function mostrarMensaje(mensaje) {
-            const messagesLogs = document.getElementById('messagesLogs');
-            messagesLogs.innerHTML += `
-                <div class="message-container">
-                    <h2>${mensaje.user}</h2>
-                    <p>${mensaje.message}</p>
-                </div>
-            `;
-        }
-        
-        
-        // Escuchar el evento de nuevo mensaje desde el servidor
-        socket.on('nuevoMensaje', (data) => {
-            // Mostrar el mensaje en la interfaz de usuario
-            mostrarMensaje(data);
-        });
-        
-
-    }
-});
-
 
