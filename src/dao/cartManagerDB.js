@@ -31,30 +31,7 @@ class CartManagerDB {
             throw new Error(`Error al crear el carrito`);
         }
     }
-
-    // async addProductByID(cid, pid) {
-    //     try {
-    //         // Encuentra el carrito por su ID
-    //         const cart = await cartModel.findOne({_id : cid});
-    
-    //         // Si el carrito no existe, lanza un error
-    //         if (!cart) {
-    //             throw new Error(`El carrito ${cid} no existe`);
-    //         }
-    
-    //         // Agrega el producto al carrito
-    //         cart.products.push({ product: pid, quantity: 1 });
-    
-    //         // Guarda los cambios en la base de datos
-    //         await cart.save();
-    
-    //         // Devuelve el carrito actualizado
-    //         return cart;
-    //     } catch (error) {
-    //         throw new Error('Error al actualizar el carrito: ' + error.message);
-    //     }
-    // }
-    
+ 
     async addProductByID(cid, pid) {
         try {
             // Busca el carrito por su ID y actualiza los productos
