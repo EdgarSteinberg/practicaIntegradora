@@ -19,6 +19,10 @@ const cartSchema = new mongoose.Schema({
         default: []
     }
 });
+//Con el middleware pre
+cartSchema.pre("find", function (){
+    this.populate("products.product")
+})
 
 const cartModel = mongoose.model(cartCollection, cartSchema);
 

@@ -31,9 +31,13 @@ app.set("views", `${__dirname}/../views`);
 //Routers
 app.use("/api/products", rutasProduct);
 app.use("/api/cart", rutasCart);
-app.use("/products", viewsRouter);
-app.use("/chat", rutasMessage)
+app.use("/api/chat", rutasMessage);
 
+
+app.use("/", viewsRouter);
+app.use("/chat", rutasMessage)
+app.use("/products", rutasProduct);
+app.use("/carts/:cid", rutasCart)
 
 //Websocket
 const PORT = 8080;

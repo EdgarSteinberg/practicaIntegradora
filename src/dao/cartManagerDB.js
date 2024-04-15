@@ -1,7 +1,8 @@
 import cartModel from '../dao/models/cartModel.js';
 
-class CartManagerDB {
 
+
+class CartManagerDB {
 
     async getAllCarts() {
         try {
@@ -14,8 +15,8 @@ class CartManagerDB {
     }
 
     async getProductsFromCartByID(cid) {
-        const carts = await cartModel.findOne({ _id: cid })
-
+        const carts = await cartModel.findOne({ _id: cid }).populate('products.product').lean();
+        
         if (!carts) throw new Error(`El carrito ${cid} no existe!`)
 
         return carts;
@@ -23,7 +24,7 @@ class CartManagerDB {
 
     async createCart() {
         try {
-            const carts = await cartModel.create({ product: [] });
+            const carts = await cartModel.create({});
             return carts;
 
         } catch (error) {
@@ -57,6 +58,77 @@ class CartManagerDB {
         }
     }
     
+    async deleteProductInCart(cid, pid) {
+        try {
+            const cart = await cartModel.findOneAndUpdate(
+                { _id: cid },
+                { $pull: { products: { product: pid } } },
+                { new: true }
+            );
+    
+            if (!cart) {
+                throw new Error(`El carrito ${cid} no existe`);
+            }
+    
+            return cart;
+        } catch (error) {
+            throw new Error('Error al eliminar el producto del carrito: ' + error.message);
+        }
+    }
+    
+    async updateCart(cid, products) {
+        try {
+            const cart = await cartModel.findOneAndUpdate(
+                { _id: cid },
+                { $set: { products: products } },
+                { new: true }
+            );
+    
+            if (!cart) {
+                throw new Error(`El carrito ${cid} no existe`);
+            }
+    
+            return cart;
+        } catch (error) {
+            throw new Error('Error al actualizar el carrito: ' + error.message);
+        }
+    }
+    
+    async updateProductQuantityInCart(cid, pid, quantity) {
+        try {
+            const cart = await cartModel.findOneAndUpdate(
+                { _id: cid, "products.product": pid },
+                { $set: { "products.$.quantity": quantity } },
+                { new: true }
+            );
+    
+            if (!cart) {
+                throw new Error(`El carrito ${cid} o el producto ${pid} no existe`);
+            }
+    
+            return cart;
+        } catch (error) {
+            throw new Error('Error al actualizar la cantidad del producto en el carrito: ' + error.message);
+        }
+    }
+    
+    async removeAllProductsFromCart(cid) {
+    try {
+        const cart = await cartModel.findByIdAndUpdate(
+            cid,
+            { $set: { products: [] } }, // Establece el arreglo de productos como vacío
+            { new: true }
+        );
+
+        if (!cart) {
+            throw new Error(`El carrito ${cid} no existe`);
+        }
+
+        return cart;
+    } catch (error) {
+        throw new Error('Error al eliminar todos los productos del carrito: ' + error.message);
+    }
+}
 
 }
 

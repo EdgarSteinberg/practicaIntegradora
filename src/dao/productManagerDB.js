@@ -2,16 +2,59 @@ import productModel from '../dao/models/productModel.js'
 
 class ProductManagerDB {
 
+    
 
-    async getAllProducts() {
+    async getAllProducts(queryParams = {}) {
         try {
-            return await productModel.find().lean();
+            // Obtener los parámetros de la consulta
+            const { page = 1, limit = 10, sort = null, category = null } = queryParams;
+    
+            // Construir la consulta a la base de datos
+            const options = {
+                page: parseInt(page),
+                limit: parseInt(limit),
+                lean: true
+            };
+            
+            const searchQuery = category ? { category: category.toLowerCase() } : {};
 
+        
+            if (sort) {
+                if (sort === 'asc') {
+                    options.sort = { price: 1 };
+                } else if (sort === 'desc') {
+                    options.sort = { price: -1 };
+                }
+            }
+
+            // Obtener los resultados paginados
+            const result = await productModel.paginate(searchQuery, options);
+    
+            // Construir los enlaces de paginación
+            const baseURL = "http://localhost:8080/products";
+            const prevLink = result.hasPrevPage ? `${baseURL}?page=${result.prevPage}` : null;
+            const nextLink = result.hasNextPage ? `${baseURL}?page=${result.nextPage}` : null;
+    
+            // Devolver los resultados en el formato correcto
+            return {
+                status: "success",
+                payload: result.docs,
+                totalPages: result.totalPages,
+                prevPage: result.prevPage,
+                nextPage: result.nextPage,
+                page: result.page,
+                hasPrevPage: result.hasPrevPage,
+                hasNextPage: result.hasNextPage,
+                prevLink: prevLink,
+                nextLink: nextLink
+            };
         } catch (error) {
             console.error(error.message);
             throw new Error("Error al buscar los productos");
         }
     }
+    
+    
 
     async getProductByID(pid) {
         const product = await productModel.findOne({ _id: pid });

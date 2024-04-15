@@ -35,7 +35,10 @@ ul {
     background-color: red;
     padding: 10px;
 }
-
+.success {
+    background-color: green;
+    padding: 10px;
+}
 .form {
     flex-direction: column;
     text-align: center;
@@ -93,3 +96,4 @@ input {
     color: black;
     margin-top: 5px;
 }
+
