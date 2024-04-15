@@ -12,7 +12,7 @@ const Messages = new MessagesManagerDB();
 const router = Router();
 
 router.get('/', (req, res) => {
-    
+
     res.redirect('/products');
 });
 
@@ -33,7 +33,7 @@ router.get("/products", async (req, res) => {
         // Renderizar la vista con los productos y los enlaces de paginación
         res.render("home", {
             title: "Coder Ecommerce",
-            products: result.payload, 
+            products: result.payload,
             style: "index.css",
             totalPages: result.totalPages,
             prevPage: result.prevPage,
@@ -48,6 +48,15 @@ router.get("/products", async (req, res) => {
         res.status(500).send("Error al obtener los productos");
     }
 });
+router.get("/products/:pid", async (req, res) => {
+
+    const result = await Manager.getProductByID(req.params.pid)
+    res.render("product", {
+        title: " Productos",
+        product: result,
+        style: "index.css"
+    })
+})
 
 router.get("/realTimeProducts", async (req, res) => {
     const queryParams = {
@@ -61,7 +70,7 @@ router.get("/realTimeProducts", async (req, res) => {
     try {
         let allProduct = await Manager.getAllProducts(queryParams);
 
-        res.render("realTimeProduct", { 
+        res.render("realTimeProduct", {
             title: "Coder Ecommerce",
             products: allProduct.payload, // Accede al array de productos en el payload
             style: "index.css"
@@ -75,7 +84,7 @@ router.get("/realTimeProducts", async (req, res) => {
 
 
 
-router.get("/chat", async (req,res) => {
+router.get("/chat", async (req, res) => {
     const allMessage = await Messages.getAllMessages();
 
     res.render("chat", {
@@ -89,7 +98,7 @@ router.get("/chat", async (req,res) => {
 router.get("/carts/:cid", async (req, res) => {
     try {
         const cart = await CartManager.getProductsFromCartByID(req.params.cid);
-        console.log(cart); 
+        console.log(cart);
         res.render("carts", {
             title: "Carrito Compras",
             cart: cart,
