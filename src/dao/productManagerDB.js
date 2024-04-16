@@ -65,23 +65,45 @@ class ProductManagerDB {
     }
 
 
+    // async createProduct(producto) {
+    //     const { title, description, code, price, stock, category, thumbnail } = producto;
+
+    //     if (!title || !description || !code || !price || !stock || !category) {
+    //         throw new Error('Error al crear el producto');
+    //     }
+
+    //     try {
+    //         const result = await productModel.create({ title, description, code, price, stock, category, thumbnail: thumbnail ?? [] });
+    //         return result;
+
+    //     } catch (error) {
+    //         console.error(error.message);
+    //         throw new Error("Error al crear el producto")
+    //     }
+    // }
+
     async createProduct(producto) {
+        console.log("Datos del producto recibidos:", producto)
         const { title, description, code, price, stock, category, thumbnail } = producto;
+        console.log('Datos del producto recibidos:', producto); // Agrega este console.log para verificar los datos del producto recibidos
 
+        // Verifica si alguno de los campos requeridos está vacío
         if (!title || !description || !code || !price || !stock || !category) {
-            throw new Error('Error al crear el producto');
+            throw new Error('Error al crear el producto: Uno o más campos requeridos están vacíos');
         }
-
+    
+        // Registra el objeto de producto para verificar sus valores
+        console.log('Objeto de producto:', producto);
+    
         try {
             const result = await productModel.create({ title, description, code, price, stock, category, thumbnail: thumbnail ?? [] });
             return result;
-
         } catch (error) {
             console.error(error.message);
             throw new Error("Error al crear el producto")
         }
     }
-
+    
 
     async updateProduct(id, producto) {
         try {

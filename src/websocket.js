@@ -1,14 +1,15 @@
 import { ProductManagerDB } from "./dao/productManagerDB.js";
 import { MessagesManagerDB } from "./dao/messagesManagerDB.js";
+import { CartManagerDB } from "./dao/cartManagerDB.js";
 const Manager = new ProductManagerDB();
 const Message = new MessagesManagerDB();
-
+const CartManager = new CartManagerDB();
 
 
 export default (io) => {
     io.on("connection", (socket) => {
         console.log("Nuevo cliente conectado ------>", socket.id);
-
+3
 
         socket.on("nuevoProducto", async data => {
             console.log("Recibido nuevo producto: ", data);
@@ -46,6 +47,26 @@ export default (io) => {
             io.emit("nuevoMensaje", data);
         });
 
+        
+        socket.on('agregarProductoAlCarrito', async ({ productId }) => {
+            console.log('ID del producto recibido:', productId);
+            try {
+                // Crear un nuevo carrito
+                const cart = await CartManager.createCart();
+        
+                // Obtener el ID del carrito creado
+                const cid = cart._id;
+        
+                // Agregar el producto al carrito utilizando el ID del carrito y el ID del producto
+                const updatedCart = await CartManager.addProductByID(cid, productId);
+        
+                // Emitir un evento de confirmación al cliente con el carrito actualizado
+                socket.emit('productoAgregadoAlCarrito', updatedCart);
+            } catch (error) {
+                console.error('Error al agregar el producto al carrito:', error);
+                // Enviar un mensaje de error al cliente si es necesario
+            }
+        });
 
     });
 }

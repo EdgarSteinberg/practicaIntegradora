@@ -63,5 +63,36 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+
 });
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const addToCartButtons = document.querySelectorAll('.agregar');
+
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', async (event) => {
+            const productId = button.getAttribute('data-productid'); // Obtener el ID del producto desde el atributo data-productid del botón
+            console.log('Producto ID:', productId);
+            try {
+                // Emitir un evento para agregar el producto al carrito
+                socket.emit('agregarProductoAlCarrito', { productId });
+            } catch (error) {
+                console.error('Error al enviar la solicitud:', error);
+                alert('Error al conectar con el servidor');
+            }
+        });
+    });
+
+    socket.on('productoAgregadoAlCarrito', () => {
+        Swal.fire({
+            title: "¡Producto agregado al carrito!",
+            text: "¡Excelente elección!",
+            icon: "success"
+        });
+    });
+});
+
+
 

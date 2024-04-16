@@ -1,4 +1,4 @@
-
+// const socket = io();
 // document.addEventListener('DOMContentLoaded', function () {
   
 //         document.getElementById("mensajeForm").addEventListener("submit", (event) => {

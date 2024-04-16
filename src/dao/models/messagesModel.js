@@ -5,7 +5,7 @@ const messageCollection = "messages";
 const messageSchema = mongoose.Schema({
     user: {
         type: String,
-        require: true
+        required: true
     },
     // correoDelUsuario: {
     //     type: String,
@@ -13,7 +13,7 @@ const messageSchema = mongoose.Schema({
     // },
     message: {
         type: String,
-        require: true
+        required: true
     }
 })
 

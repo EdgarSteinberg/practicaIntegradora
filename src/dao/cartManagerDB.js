@@ -25,8 +25,9 @@ class CartManagerDB {
     async createCart() {
         try {
             const carts = await cartModel.create({});
-            return carts;
-
+           // return carts;
+           console.log('Carrito creado:', carts);
+           return carts._id; // Devuelve solo el _id del carrito creado
         } catch (error) {
             console.error(error.message);
             throw new Error(`Error al crear el carrito`);
