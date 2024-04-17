@@ -1,6 +1,8 @@
-const socket = io();
 document.addEventListener('DOMContentLoaded', function () {
-  
+    // Verificar si la URL actual contiene "/chat"
+    if (window.location.href.includes("localhost:8080/chat")) {
+        // El código aquí solo se ejecutará en la página http://localhost:8080/chat
+
         document.getElementById("mensajeForm").addEventListener("submit", (event) => {
             event.preventDefault();
         
@@ -33,5 +35,5 @@ document.addEventListener('DOMContentLoaded', function () {
             // Mostrar el mensaje en la interfaz de usuario
             mostrarMensaje(data);
         });
-        
-    });
+    }
+});
