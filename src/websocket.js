@@ -8,7 +8,7 @@ const CartManager = new CartManagerDB();
 
 export default (io) => {
     io.on("connection", (socket) => {
-        console.log("Nuevo cliente conectado ------>", socket.id);
+        //console.log("Nuevo cliente conectado ------>", socket.id);
 3
 
         socket.on("nuevoProducto", async data => {
