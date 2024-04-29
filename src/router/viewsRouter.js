@@ -32,6 +32,7 @@ router.get("/products", async (req, res) => {
         const result = await Manager.getAllProducts(queryParams);
 
         // Renderizar la vista con los productos y los enlaces de paginación
+        console.log(req.session.user)
         res.render(
             "home",
             {

@@ -1,72 +1,62 @@
 import { Router } from 'express';
+import passport from 'passport';
 
-import userModel from '../dao/models/userModel.js';
 
 const router = Router();
 
-// router.post("/register", async (req, res) => {
-//     try {
-//         req.session.failRegister = false
-//         await userModel.create(req.body);
-//         res.redirect("/login");
 
-//     } catch (e) {
-//         req.session.failRegister = true;
-//         res.redirect("/register")
-//     }
-// });
-router.post("/register", async (req, res) => {
-    try {
-        req.session.failRegister = false;
-
-        // Verificar si el correo electrónico y la contraseña coinciden con las credenciales de administrador predefinidas
-        const { email, password } = req.body;
-        if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
-            // Si coincide, establecer el rol como "admin"
-            await userModel.create({ ...req.body, role: "admin" });
-        } else {
-            // Si no coincide, establecer el rol como "usuario" por defecto
-            await userModel.create({ ...req.body, role: "usuario" });
-        }
-
-        return res.redirect("/login");
-    } catch (error) {
-        console.error("Error al registrar usuario:", error);
-        req.session.failRegister = true;
-        return res.redirect("/register");
+router.post(
+    '/register',
+    passport.authenticate('register', { failureRedirect: "/api/sessions/failRegister" }),
+    (req, res) => {
+        // res.send({
+        //     status: 'success',
+        //     message: 'User registered'
+        // });
+        res.redirect("/login");
     }
+);
+
+router.get("/failRegister", (req, res) => {
+    res.status(401).send({
+        status: 'error',
+        message: "Failed Register"
+    })
 });
 
-
-router.post("/login", async (req, res) => {
-    try {
-        req.session.failLogin = false;
-        const result = await userModel.findOne({ email: req.body.email });
-        if (!result) {
-            req.session.failLogin = true;
-            return res.redirect("/login")
-        };
-
-        if (req.body.password !== result.password) {
-            req.session.failLogin = true;
-            return res.redirect("/login")
-        }
-        // Verificar si las credenciales coinciden con las del administrador
-        if (req.body.email === "adminCoder@coder.com" && req.body.password === "adminCod3r123") {
-            // Si coincide, establecer el rol como "admin"
-            result.role = "admin";
+router.post(
+    '/login',
+    passport.authenticate("login", { failureRedirect: "/api/sessions/failLogin" }),
+    (req, res) => {
+        if (!req.user) {
+            return res.status(401).send({
+                status: "error",
+                message: "Error Login!"
+            });
         }
 
-        delete result.password;
-        req.session.user = result;
+        req.session.user = {
+            first_name: req.user.first_name,
+            last_name: req.user.last_name,
+            email: req.user.email,
+            age: req.user.age,
+            username: req.user.username,
+            name: req.user.name
+        }
 
         return res.redirect("/products");
-
-    } catch (error) {
-        console.error("Error al logear usuario:", error);
-        req.session.failLogin = true;
-        return res.redirect("/login");
+        // res.send({
+        //     status: 'success',
+        //     payload: req.user
+        // });
     }
+);
+
+router.get("/failLogin", (req, res) => {
+    res.status(401).send({
+        status: 'error',
+        message: "Failed Login"
+    })
 });
 
 router.post("/logout", (req, res) => {
@@ -80,4 +70,16 @@ router.post("/logout", (req, res) => {
     })
 });
 
+
+router.get("/github", passport.authenticate('github', { scope: ['user.email'] }), (req, res) => {
+    res.send({
+        status: 'succes',
+        message: 'Success'
+    });
+});
+
+router.get("/githubcallback", passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
+    req.session.user = req.user;
+    res.redirect('/');
+});
 export default router;

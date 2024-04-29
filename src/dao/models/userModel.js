@@ -26,8 +26,16 @@ const userSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        minLength: 3,
+        //minLength: 3, 
         require: true
+    },
+    username: {
+        type: String,
+        //unique: true // Asegura que cada username sea único
+    },
+    name: {
+        type:String,
+        //required: true
     },
     role: {
         type: String,

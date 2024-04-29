@@ -11,6 +11,9 @@ import mongoose from "mongoose";
 import session from "express-session";
 import mongoStore from "connect-mongo";
 import userRouter from "./router/userRouter.js";
+import passport from "passport";
+import initializePassport from "./config/passportConfig.js";
+import initializeGitHubPassport from "./config/passportConfigGitHub.js";
 
 const app = express();
 
@@ -19,12 +22,12 @@ const uri = "mongodb+srv://steinberg2024:cai2024@cluster0.cl7spkj.mongodb.net/ec
 mongoose.connect(uri);
 
 
-//Middlewares
+//Middlewares express
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-//Handlebars Config
+//Motores de plantillas Handlebars 
 app.engine("handlebars", handlebars.engine());
 app.set("view engine", "handlebars");
 app.set("views", `${__dirname}/../views`);
@@ -43,6 +46,11 @@ app.use(session(
         saveUninitialized: true
     }
 ))
+//Strategy
+initializePassport();
+initializeGitHubPassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Routers
 app.use("/api/products", rutasProduct);
@@ -50,6 +58,7 @@ app.use("/api/cart", rutasCart);
 app.use("/api/chat", rutasMessage);
 app.use('/api/sessions', userRouter);
 
+//Vistas
 app.use("/", viewsRouter);
 app.use("/chat", rutasMessage)
 app.use("/products", rutasProduct);

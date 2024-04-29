@@ -1,7 +1,6 @@
 import cartModel from '../dao/models/cartModel.js';
 
 
-
 class CartManagerDB {
 
     async getAllCarts() {
