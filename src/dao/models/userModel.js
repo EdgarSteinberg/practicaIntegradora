@@ -31,7 +31,7 @@ const userSchema = mongoose.Schema({
     },
     username: {
         type: String,
-        //unique: true // Asegura que cada username sea único
+        unique: true // Asegura que cada username sea único
     },
     name: {
         type:String,

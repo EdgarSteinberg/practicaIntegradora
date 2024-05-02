@@ -18,7 +18,8 @@ const initializeGitHubPassport = () => {
         async (accessToken, refreshToken, profile, done) => {
             try{
                 console.log(profile);
-                let user = await userModel.findOne({ username : profile._json.login})
+                //let user = await userModel.findOne({ username : profile._json.login})
+                let user = await userModel.findOne({ $or: [{ username: profile._json.login }, { email: profile._json.email }] });
                 if(!user) {
                     let newUser = {
                         username: profile._json.login,
