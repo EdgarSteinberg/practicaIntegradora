@@ -72,6 +72,7 @@ router.post("/logout", (req, res) => {
 
 
 router.get("/github", passport.authenticate('github', { scope: ['user.email'] }), (req, res) => {
+    console.log(req.user.email);
     res.send({
         status: 'succes',
         message: 'Success'

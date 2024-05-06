@@ -16,24 +16,31 @@ const initializeGitHubPassport = () => {
         },
 
         async (accessToken, refreshToken, profile, done) => {
-            try{
+            try {
                 console.log(profile);
-                //let user = await userModel.findOne({ username : profile._json.login})
-                let user = await userModel.findOne({ $or: [{ username: profile._json.login }, { email: profile._json.email }] });
-                if(!user) {
+                // Acceder al correo electrónico del usuario desde el objeto profile
+                const email = profile._json.email;
+
+                // Buscar el usuario en la base de datos por correo electrónico o nombre de usuario
+                let user = await userModel.findOne({ $or: [{ username: profile._json.login }, { email: email }] });
+                if (!user) {
+                    // Si el usuario no existe, crear un nuevo usuario
                     let newUser = {
                         username: profile._json.login,
                         name: profile._json.name,
+                        email: email || '', // Establecer el correo electrónico como cadena vacía si es nulo
                         password: ""
-                    }
+                    };
                     let result = await userModel.create(newUser);
                     done(null, result);
-                }else{
+                } else {
+                    // Si el usuario existe, devolverlo
                     return done(null, user);
                 }
-            }catch (error) {
-                return done(error)
+            } catch (error) {
+                return done(error);
             }
+        
         }));
 
         passport.serializeUser((user, done) => {
