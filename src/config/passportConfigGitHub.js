@@ -1,11 +1,13 @@
 import passport from 'passport';
 import GitHubStrategy from 'passport-github2';
 import userModel from '../dao/models/userModel.js';
+import dotenv from 'dotenv';
 
+dotenv.config();
 
 const initializeGitHubPassport = () => {
-    const CLIENT_ID = "Iv1.3ba31aa9dedaeb4e";
-    const SECRET_ID = "88ad705efc2bf1b26fcfb7ada1ccc9de0942c263";
+    const CLIENT_ID = process.env.GITHUB_CLIENT_ID;
+    const SECRET_ID = process.env.GITHUB_CLIENT_SECRET; 
 
     passport.use(
         'github',
@@ -28,7 +30,7 @@ const initializeGitHubPassport = () => {
                     let newUser = {
                         username: profile._json.login,
                         name: profile._json.name,
-                        email: email || '', // Establecer el correo electrónico como cadena vacía si es nulo
+                        email: profile._json.email ||  `${profile._json.login}@github.com`, // Establecer el correo electrónico como cadena vacía si es nulo
                         password: ""
                     };
                     let result = await userModel.create(newUser);

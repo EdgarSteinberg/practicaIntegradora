@@ -1,30 +1,44 @@
 import { Router } from 'express';
+import { userManagerDB } from '../dao/userManagerDB.js';
 import passport from 'passport';
 
 
-const router = Router();
+const UserRouter = Router();
+
+const Users = new userManagerDB();
 
 
-router.post(
+UserRouter.post(
     '/register',
     passport.authenticate('register', { failureRedirect: "/api/sessions/failRegister" }),
-    (req, res) => {
-        // res.send({
-        //     status: 'success',
-        //     message: 'User registered'
-        // });
-        res.redirect("/login");
+    async (req, res) => {
+        try {
+            const user = await Users.register(req.body);
+    
+            res.status(200).send({
+                status: 'success',
+                payload: user,
+                redirectTo: '/login' // Indica al cliente dónde redirigir
+            });
+
+
+        } catch (error) {
+            res.status(400).send({
+                status: 'error',
+                message: error.message
+            });
+        }
     }
 );
 
-router.get("/failRegister", (req, res) => {
+UserRouter.get("/failRegister", (req, res) => {
     res.status(401).send({
         status: 'error',
         message: "Failed Register"
     })
 });
 
-router.post(
+UserRouter.post(
     '/login',
     passport.authenticate("login", { failureRedirect: "/api/sessions/failLogin" }),
     (req, res) => {
@@ -52,14 +66,14 @@ router.post(
     }
 );
 
-router.get("/failLogin", (req, res) => {
+UserRouter.get("/failLogin", (req, res) => {
     res.status(401).send({
         status: 'error',
         message: "Failed Login"
     })
 });
 
-router.post("/logout", (req, res) => {
+UserRouter.post("/logout", (req, res) => {
     req.session.destroy(error => {
         if (!error) return res.redirect("/login");
 
@@ -71,7 +85,7 @@ router.post("/logout", (req, res) => {
 });
 
 
-router.get("/github", passport.authenticate('github', { scope: ['user.email'] }), (req, res) => {
+UserRouter.get("/github", passport.authenticate('github', { scope: ['user.email'] }), (req, res) => {
     console.log(req.user.email);
     res.send({
         status: 'succes',
@@ -79,8 +93,8 @@ router.get("/github", passport.authenticate('github', { scope: ['user.email'] })
     });
 });
 
-router.get("/githubcallback", passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
+UserRouter.get("/githubcallback", passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
     req.session.user = req.user;
     res.redirect('/');
 });
-export default router;
+export default UserRouter;
